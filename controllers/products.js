@@ -1,5 +1,5 @@
 const httpStatus = require("http-status");
-const { Book, User, Category } = require("../models");
+const { Product, User, Category } = require("../models");
 const { Op, and, or, where } = require("sequelize");
 
 const verifyAdmin = async (req, res) => {
@@ -16,18 +16,18 @@ const verifyAdmin = async (req, res) => {
   }
 };
 
-exports.addNewBook = async (req, res) => {
+exports.addNewProduct = async (req, res) => {
   try {
     await verifyAdmin(req, res);
     const { name, categoryId, image, downloadUrl, description } = req.body;
-    const book = await Book.create({
+    const product = await Product.create({
       name,
       categoryId,
       image,
       downloadUrl,
       description,
     });
-    return res.status(httpStatus.CREATED).json({ success: true, book });
+    return res.status(httpStatus.CREATED).json({ success: true, product });
   } catch (error) {
     console.log(error);
     res
@@ -36,7 +36,7 @@ exports.addNewBook = async (req, res) => {
   }
 };
 
-exports.getBooks = async (req, res) => {
+exports.getProducts = async (req, res) => {
   try {
     let findingQuery = {};
     if (req.query.categoryId) {
@@ -67,7 +67,7 @@ exports.getBooks = async (req, res) => {
     limit = parseInt(limit, 10);
     const startIndex = (page - 1) * limit;
 
-    const { rows, count } = await Book.findAndCountAll({
+    const { rows, count } = await Product.findAndCountAll({
       where: findingQuery,
       offset: startIndex,
       limit,
@@ -77,7 +77,7 @@ exports.getBooks = async (req, res) => {
 
     return res.status(httpStatus.OK).json({
       success: true,
-      books: rows,
+      products: rows,
       total: count,
       currentPage: page,
       limit,
@@ -90,14 +90,14 @@ exports.getBooks = async (req, res) => {
   }
 };
 
-exports.getBookById = async (req, res) => {
+exports.getProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const book = await Book.findOne({
+    const product = await Product.findOne({
       where: { id },
       include: [{ model: Category }],
     });
-    return res.status(httpStatus.OK).json({ success: true, book });
+    return res.status(httpStatus.OK).json({ success: true, product });
   } catch (error) {
     console.log(error);
     res
@@ -106,23 +106,23 @@ exports.getBookById = async (req, res) => {
   }
 };
 
-exports.updateBook = async (req, res) => {
+exports.updateProduct = async (req, res) => {
   try {
     await verifyAdmin(req, res);
     const { id } = req.params;
     const { name, categoryId, image, downloadUrl, description } = req.body;
-    const book = await Book.findOne({ where: { id } });
-    if (!book) {
-      throw new Error("Book not found");
+    const product = await Product.findOne({ where: { id } });
+    if (!product) {
+      throw new Error("Product not found");
     }
-    await book.update({
+    await product.update({
       name,
       categoryId,
       image,
       downloadUrl,
       description,
     });
-    return res.status(httpStatus.OK).json({ success: true, book });
+    return res.status(httpStatus.OK).json({ success: true, product });
   } catch (error) {
     console.log(error);
     res
@@ -131,15 +131,15 @@ exports.updateBook = async (req, res) => {
   }
 };
 
-exports.deleteBook = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
   try {
     await verifyAdmin(req, res);
     const { id } = req.params;
-    const book = await Book.findOne({ where: { id } });
-    if (!book) {
-      throw new Error("Book not found");
+    const product = await Product.findOne({ where: { id } });
+    if (!product) {
+      throw new Error("Product not found");
     }
-    await book.destroy();
+    await product.destroy();
     return res.status(httpStatus.OK).json({ success: true });
   } catch (error) {
     console.log(error);
