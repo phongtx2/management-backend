@@ -39,28 +39,30 @@ exports.addNewProduct = async (req, res) => {
 exports.getProducts = async (req, res) => {
   try {
     let findingQuery = {};
-    if (req.query.categoryId) {
+    if (req.query.categoryId == 0) {
+      findingQuery = findingQuery;
+    } else if (req.query.categoryId) {
       findingQuery = { ...findingQuery, categoryId: req.query.categoryId };
     }
 
     //filter keyword
-    if (req.query.keyword) {
-      findingQuery = {
-        ...findingQuery,
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${req.query.keyword}%`,
-            },
-          },
-          {
-            description: {
-              [Op.like]: `%${req.query.keyword}%`,
-            },
-          },
-        ],
-      };
-    }
+    // if (req.query.keyword) {
+    //   findingQuery = {
+    //     ...findingQuery,
+    //     [Op.or]: [
+    //       {
+    //         name: {
+    //           [Op.like]: `%${req.query.keyword}%`,
+    //         },
+    //       },
+    //       {
+    //         description: {
+    //           [Op.like]: `%${req.query.keyword}%`,
+    //         },
+    //       },
+    //     ],
+    //   };
+    // }
 
     //Pagination, default page 1, limit 5
     let { page = 1, limit = 9 } = req.query;

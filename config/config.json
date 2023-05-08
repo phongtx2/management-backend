@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "uucgroynhbp6hwfq",
-    "password": "fOA4ZcBAdKi2Q5OwGfaX",
-    "database": "b574yxqflld2iu3o9q7x",
-    "host": "b574yxqflld2iu3o9q7x-mysql.services.clever-cloud.com",
+    "username": "root",
+    "password": "",
+    "database": "sourismeo",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {

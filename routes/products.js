@@ -13,7 +13,7 @@ router.route("/").get(getProducts).post(authenticate, addNewProduct);
 router
   .route("/:id")
   .get(getProductById)
-  .patch(authenticate, updateProduct)
-  .delete(authenticate, deleteProduct);
+  .delete(authenticate, deleteProduct)
+  .patch(authenticate, updateProduct);
 
 module.exports = router;
